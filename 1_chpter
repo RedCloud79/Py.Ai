@@ -372,6 +372,138 @@ epoch = 79
  b2 :  -2.286
 
 
+###################################
+@@연습문제 1 (2입력 3출력)
+x1, x2 = 0.05, 0.10
+w1, w2 = 0.15, 0.20
+w3, w4 = 0.25, 0.30
+w5, w6 = 0.40, 0.55
+b1, b2, b3 = 0.35, 0.45, 0.60
+y1T, y2T, y3T = 0.01, 0.99, 0.50
+lr = 0.01
+
+for epoch in range(2000):
+    y1 = x1*w1 + x2*w2 + 1*b1
+    y2 = x1*w3 + x2*w4 + 1*b2
+    y3 = x1*w5 + x2*w6 + 1*b3
+    E = ((y1-y1T)**2/2 + (y2-y2T)**2 + (y3-y3T)**2/2)/2
+    y1E = y1 - y1T
+    y2E = y2 - y2T
+    y3E = y3 - y3T
+    w1E = y1E*x1
+    w2E = y1E*x2
+    w3E = y2E*x1
+    w4E = y2E*x2
+    w5E = y3E*x1
+    w6E = y3E*x2
+    b1E = y1E*1
+    b2E = y2E*1
+    b3E = y3E*1
+    w1 -= lr*w1E
+    w2 -= lr*w2E
+    b1 -= lr*b1E
+    w3 -= lr*w3E
+    w4 -= lr*w4E
+    b2 -= lr*b2E
+    w5 -= lr*w5E
+    w6 -= lr*w6E
+    b3 -= lr*b3E
+    
+    print(f'epoch = {epoch}')
+    print(f' y1 :  {y1:.3f}')
+    print(f' y2 :  {y2:.3f}')
+    print(f' y3 :  {y3:.3f}')
+    print(f' w1 :  {w1:.3f}')
+    print(f' w2 :  {w2:.3f}')
+    print(f' b1 :  {b1:.3f}')
+    print(f' w3 :  {w3:.3f}')
+    print(f' w4 :  {w4:.3f}')
+    print(f' b2 :  {b2:.3f}')
+    print(f' w5 :  {w5:.3f}')
+    print(f' w6 :  {w6:.3f}')
+    print(f' b3 :  {b3:.3f}')
+    
+    if E < 0.0000001 :
+        break
+*결과값
+epoch = 704
+ y1 :  0.010
+ y2 :  0.990
+ y3 :  0.500
+ w1 :  0.132
+ w2 :  0.164
+ b1 :  -0.013
+ w3 :  0.275
+ w4 :  0.349
+ b2 :  0.941
+ w5 :  0.391
+ w6 :  0.533
+ b3 :  0.427
+
+@@연습문제 2번 (3입력2출력)
+x1, x2, x3 = 0.02, 0.05, 0.12
+w1, w2 = 0.15, 0.20
+w3, w4 = 0.02, 0.27
+w5, w6 = 0.37, 0.52
+b1, b2 = 0.12, 0.39
+y1T, y2T = 0.02, 0.98
+lr = 0.01
+
+for epoch in range(2000):
+    y1 = x1*w1 + x2*w2 + x3*w3 + 1*b1
+    y2 = x1*w4 + x2*w5 + x3*w6 + 1*b2
+    E = ((y1-y1T)**2/2 + (y2-y2T)**2)/2
+    y1E = y1 - y1T
+    y2E = y2 - y2T
+    w1E = y1E*x1
+    w2E = y1E*x2
+    w3E = y1E*x3
+    w4E = y2E*x1
+    w5E = y2E*x2
+    w6E = y2E*x3
+    b1E = y1E*1
+    b2E = y2E*1
+    w1 -= lr*w1E
+    w2 -= lr*w2E
+    w3 -= lr*w3E
+    b1 -= lr*b1E
+    w4 -= lr*w4E
+    w5 -= lr*w5E
+    w6 -= lr*w6E
+    b2 -= lr*b2E
+    
+    print(f'epoch = {epoch}')
+    print(f' y1 :  {y1:.3f}')
+    print(f' y2 :  {y2:.3f}')
+    print(f' w1 :  {w1:.3f}')
+    print(f' w2 :  {w2:.3f}')
+    print(f' w3 :  {w3:.3f}')
+    print(f' b1 :  {b1:.3f}')
+    print(f' w4 :  {w4:.3f}')
+    print(f' w5 :  {w5:.3f}')
+    print(f' w6 :  {w6:.3f}')
+    print(f' b2 :  {b2:.3f}')
+    
+    if E < 0.0000001 :
+        break
+* 결과값
+epoch = 689
+ y1 :  0.020
+ y2 :  0.980
+ w1 :  0.148
+ w2 :  0.194
+ w3 :  0.006
+ b1 :  0.007
+ w4 :  0.280
+ w5 :  0.395
+ w6 :  0.579
+ b2 :  0.885
+ 
+
+
+
+
+
 
 
 
