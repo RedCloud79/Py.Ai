@@ -386,10 +386,13 @@ for epoch in range(2000):
     y1 = x1*w1 + x2*w2 + 1*b1
     y2 = x1*w3 + x2*w4 + 1*b2
     y3 = x1*w5 + x2*w6 + 1*b3
+    
     E = ((y1-y1T)**2 + (y2-y2T)**2 + (y3-y3T)**2)/2
+    
     y1E = y1 - y1T
     y2E = y2 - y2T
     y3E = y3 - y3T
+    
     w1E = y1E*x1
     w2E = y1E*x2
     w3E = y2E*x1
@@ -399,6 +402,7 @@ for epoch in range(2000):
     b1E = y1E*1
     b2E = y2E*1
     b3E = y3E*1
+    
     w1 -= lr*w1E
     w2 -= lr*w2E
     b1 -= lr*b1E
@@ -439,6 +443,10 @@ epoch = 715
  w5 :  0.391
  w6 :  0.533
  b3 :  0.427
+# 은닉층 역전파 제 4공식
+x1E=y1E*w1 + y2E*w3 + y3E*w5
+x2E=y1E*w2 + y2E*w4 + y3E*w6
+
 
 @@연습문제 2번 (3입력2출력)
 x1, x2, x3 = 0.02, 0.05, 0.12
@@ -452,9 +460,12 @@ lr = 0.01
 for epoch in range(2000):
     y1 = x1*w1 + x2*w2 + x3*w3 + 1*b1
     y2 = x1*w4 + x2*w5 + x3*w6 + 1*b2
+    
     E = ((y1-y1T)**2 + (y2-y2T)**2)/2
+    
     y1E = y1 - y1T
     y2E = y2 - y2T
+    
     w1E = y1E*x1
     w2E = y1E*x2
     w3E = y1E*x3
@@ -463,6 +474,7 @@ for epoch in range(2000):
     w6E = y2E*x3
     b1E = y1E*1
     b2E = y2E*1
+    
     w1 -= lr*w1E
     w2 -= lr*w2E
     w3 -= lr*w3E
@@ -499,7 +511,10 @@ epoch = 690
  w6 :  0.579
  b2 :  0.885
  
-
+# 은닉층 역전파
+x1E = y1E*w1 + y2E*w4
+x2E = y1E*w2 + y2E*w5
+x3E = y1E*w3 + y2E*w6
 
 
 
