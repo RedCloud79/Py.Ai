@@ -276,38 +276,100 @@ y2E = y2 - y2T
 (y1E,y2E)
 결과값 : (-8, 60)
 
-@제 4공식 : x1E = yE*w1
-            x2E = yE*w2
+@제 4공식 : x1E = y1E*w1 + y2E*w3
+            x2E = y1E*w2 + y2E*w4
 
-@제 5공식 : y = x1*w1 + x2*w2 + 1*b
-            y = w1*x1 + w2*x2 + b*1
+@제 5공식 : y1 = x1*w1 + x2*w2 + 1*b1
+            y2 = x1*w3 + x2*w4 + 1*b2
+            y1 = w1*x1 + w2*x2 + b1*1
+            y2 = w3*x1 + w4*x2 + b2*1
 
-@제 6공식 : w1E =yE*x1
-            w2E =yE*x2
-            bE=yE*1
+@제 6공식 : w1E = y1E*x1 w3E = y2E*x1
+            w2E = y1E*x2 w4E = y2E*x2
+            b1E = y1E*1 b2E = y2E*1
 ex_4)
-w1E =yE*x1
-w2E =yE*x2
-bE=yE*1
-(w1E, w2E, bE)
+w1E = y1E*x1
+w2E = y1E*x2
+w3E = y2E*x1
+w4E = y2E*x2
+b1E = y1E*1
+b2E = y2E*1
+(w1E, w2E, b1E)
 결과값 : (-16, -24, -8)
+(w3E, w4E, b2E)
+결과값 : (120, 180, 60)
 
 
 @제 7공식 : w1 -= lr*w1E
             w2 -= lr*w2E
-            b -= lr*bE
+            b1 -= lr*b1E
+            w3 -= lr*w3E
+            w4 -= lr*w4E
+            b2 -= lr*b2E
 ex_5)
+>>> lr = 0.01
+>>> w1 -= lr*w1E
+>>> w2 -= lr*w2E
+>>> b1 -= lr*b1E
+>>> w3 -= lr*w3E
+>>> w4 -= lr*w4E
+>>> b2 -= lr*b2E
+>>> (w1,w2,b1)
+(3.16, 4.24, 1.08)
+>>> (w3,w4,b2)
+(3.8, 4.2, 1.4)
+
+
+## 반복수행하기
+x1, x2 = 2, 3
+w1, w2 = 3, 4
+w3, w4 = 5, 6
+b1, b2 = 1, 2
+y1T, y2T = 27, -30
 lr = 0.01
-w1 -= lr*w1E
-w2 -= lr*w2E
-b -= lr*bE
-(w1,w2,b)
-결과값 : (3.16, 4.24, 1.08)
 
+for epoch in range(2000):
+    y1 = x1*w1 + x2*w2 + 1*b1
+    y2 = x1*w3 + x2*w4 + 1*b2
+    E = ((y1-y1T)**2/2 + (y2-y2T)**2)/2
+    y1E = y1 - y1T
+    y2E = y2 - y2T
+    w1E = y1E*x1
+    w3E = y2E*x1
+    w2E = y1E*x2
+    w4E = y2E*x2
+    b1E = y1E*1
+    b2E = y2E*1
+    w1 -= lr*w1E
+    w2 -= lr*w2E
+    b1 -= lr*b1E
+    w3 -= lr*w3E
+    w4 -= lr*w4E
+    b2 -= lr*b2E
+    
+    print(f'epoch = {epoch}')
+    print(f' y1 :  {y1:.3f}')
+    print(f' y2 :  {y2:.3f}')
+    print(f' w1 :  {w1:.3f}')
+    print(f' w2 :  {w2:.3f}')
+    print(f' b1 :  {b1:.3f}')
+    print(f' w3 :  {w3:.3f}')
+    print(f' w4 :  {w4:.3f}')
+    print(f' b2 :  {b2:.3f}')
+    
+    if E < 0.0000001 :
+        break
 
-
-
-
+* 결과값
+epoch = 79
+ y1 :  27.000
+ y2 :  -30.000
+ w1 :  4.143
+ w2 :  5.714
+ b1 :  1.571
+ w3 :  -3.571
+ w4 :  -6.857
+ b2 :  -2.286
 
 
 
