@@ -3,7 +3,7 @@
 인공지능 > 머신러닝 > 딥러닝
 
 * 인공 신경망
-- 인간의 중앙 신경계로부터 영가을 얻어 만들어졌다.
+- 인간의 중앙 신경계로부터 영을 얻어 만들어졌다.
 
 *신경망의 구조
 - 입력층, 은닉층, 출력층의 구조로 이루어져 있고, 은닉층이 2층 이상일 때 심층 신경망(DNN)이라고 합니다.
@@ -515,6 +515,108 @@ epoch = 690
 x1E = y1E*w1 + y2E*w4
 x2E = y1E*w2 + y2E*w5
 x3E = y1E*w3 + y2E*w6
+
+
+## 2입력 2은닉 2출력 인공 신경망
+- 은닉층이 추가된경우 쪼개어 볼수있다. [2입력 2출력]
+@1 순전파
+h1 = x1*w1 + x2*w2 + b1
+h2 = x1*w3 + x2*w4 + b2
+y1 = h1*w5 + h2*w6 + b3
+y2 = h1*w7 + h2*w8 + b4
+
+@2 오차
+E = (y1-y1T)^2/2 + (y2-y2T)^2/2
+
+@3 역전파 오차
+y1E = y1 - y1T
+y2E = y2 - y2T
+
+@4 입력 역전파
+h1E = y1E*w5 + y2E*w7
+h2E = y1E*w6 + y2E*w8
+
+@6 가중치, 편향 역전파
+w5E = y1E*h1
+w6E = y1E*h2
+w7E = y2E*h1
+w8E = y2E*h2
+b3E = y1E*1
+b4E = y2E*1
+
+w1E = h1E*x1
+w2E = h1E*x2
+w3E = h2E*x1
+w4E = h2E*x2
+b1E = h1E*1
+b2E = h2E*1
+
+#인공 신경망 구현하기
+ex_1)
+x1, x2 = 0.05, 0.10
+
+w1, w2, w3, w4 = 0.15, 0.20, 0.25, 0.30
+b1, b2 = 0.35, 0.35
+
+w5, w6, w7, w8 = 0.40, 0.45, 0.50, 0.55
+b3, b4 = 0.60, 0.60
+
+y1T, y2T = 0.01, 0.99
+
+lr = 0.01
+
+for epoch in range(2000):
+    h1 = x1*w1 + x2*w2 + 1*b1
+    h2 = x1*w3 + x2*w4 + 1*b2
+    y1 = h1*w5 + h2*w6 + 1*b3
+    y2 = h1*w7 + h2*w8 + 1*b4
+    
+    E = ((y1-y1T)**2 + (y2-y2T)**2)/2
+    
+    y1E = y1 - y1T
+    y2E = y2 - y2T
+    
+    h1E = y1E*w5 + y2E*w7
+    h2E = y1E*w6 + y2E*w8
+    
+    w1E = h1E*x1
+    w2E = h1E*x2
+    w3E = h2E*x1
+    w4E = h2E*x2
+    w5E = y1E*h1
+    w6E = y1E*h2
+    w7E = y2E*h1
+    w8E = y2E*h2
+    b1E = h1E*1
+    b2E = h2E*1
+    b3E = y1E*1
+    b4E = y2E*1
+    
+    w1 -= lr*w1E
+    w2 -= lr*w2E
+    w3 -= lr*w3E
+    w4 -= lr*w4E
+    b1 -= lr*b1E
+    b2 -= lr*b2E
+    
+    w5 -= lr*w5E
+    w6 -= lr*w6E
+    w7 -= lr*w7E
+    w8 -= lr*w8E
+    b3 -= lr*b3E
+    b4 -= lr*b4E
+    
+    
+    if E < 0.0000001 :
+        print(f'epoch = {epoch}')
+        print(f' y1 :  {y1:.3f}')
+        print(f' y2 :  {y2:.3f}')
+        break
+* 결과값
+epoch = 665
+ y1 :  0.010
+ y2 :  0.990
+
 
 
 
