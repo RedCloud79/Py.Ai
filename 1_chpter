@@ -566,20 +566,20 @@ y1T, y2T = 0.01, 0.99
 lr = 0.01
 
 for epoch in range(2000):
-    h1 = x1*w1 + x2*w2 + 1*b1
+    h1 = x1*w1 + x2*w2 + 1*b1 #1
     h2 = x1*w3 + x2*w4 + 1*b2
     y1 = h1*w5 + h2*w6 + 1*b3
     y2 = h1*w7 + h2*w8 + 1*b4
     
-    E = ((y1-y1T)**2 + (y2-y2T)**2)/2
+    E = ((y1-y1T)**2 + (y2-y2T)**2)/2 #2
     
-    y1E = y1 - y1T
+    y1E = y1 - y1T # 3
     y2E = y2 - y2T
     
-    h1E = y1E*w5 + y2E*w7
+    h1E = y1E*w5 + y2E*w7 #4
     h2E = y1E*w6 + y2E*w8
     
-    w1E = h1E*x1
+    w1E = h1E*x1 #6
     w2E = h1E*x2
     w3E = h2E*x1
     w4E = h2E*x2
@@ -592,7 +592,7 @@ for epoch in range(2000):
     b3E = y1E*1
     b4E = y2E*1
     
-    w1 -= lr*w1E
+    w1 -= lr*w1E #7
     w2 -= lr*w2E
     w3 -= lr*w3E
     w4 -= lr*w4E
