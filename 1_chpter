@@ -140,28 +140,169 @@ for epoch in range(200):
     print(f' w :  {w:.3f}')
     print(f' b :  {b:.3f}')
     
-    if E < 0.000000001 :
+    if E < 0.0000001 :
         break
     
 * 결과값
-epoch = 197
+epoch = 171
  y :  10.000
  w :  4.200
  b :  1.600
-epoch = 198
- y :  10.000
- w :  4.200
- b :  1.600
-epoch = 199
+epoch = 172
  y :  10.000
  w :  4.200
  b :  1.600
 
 
+## 딥러닝 확장하기
+***** 2입력 1출력 인공 신경 *****
+@제 1공식 : y = x1*w1 + x2*w2 + 1*b
+ex_1)
+x1, x2 = 2,3
+w1,w2=3,4
+b=1
+y = x1*w1 + x2*w2 + b*1
+y
+결과값 : 19
+
+@제 2공식 : E = (y-yT)**2/2
+ex_2)
+yT = 27
+E = (y-yT)**2/2
+E
+결과값 : 32.0
+
+@제 3공식 : yE = y - yT
+ex_3)
+yE = y-yT
+yE
+결과값 : -8
+
+@제 4공식 : x1E = yE*w1
+            x2E = yE*w2
+
+@제 5공식 : y = x1*w1 + x2*w2 + 1*b
+            y = w1*x1 + w2*x2 + b*1
+
+@제 6공식 : w1E =yE*x1
+            w2E =yE*x2
+            bE=yE*1
+ex_4)
+w1E =yE*x1
+w2E =yE*x2
+bE=yE*1
+(w1E, w2E, bE)
+결과값 : (-16, -24, -8)
 
 
+@제 7공식 : w1 -= lr*w1E
+            w2 -= lr*w2E
+            b -= lr*bE
+ex_5)
+lr = 0.01
+w1 -= lr*w1E
+w2 -= lr*w2E
+b -= lr*bE
+(w1,w2,b)
+결과값 : (3.16, 4.24, 1.08)
+
+## 반복수행하기
+
+ex_1)
+x1, x2 = 2,3
+w1, w2 = 3, 4
+b = 1
+yT = 27
+lr = 0.01
+
+for epoch in range(2000):
+    y = x1*w1 + x2*w2 + 1*b
+    E = (y-yT)**2/2
+    yE = y-yT
+    w1E = yE*x1
+    w2E = yE*x2
+    bE = yE*1
+    w1 -= lr*w1E
+    w2 -= lr*w2E
+    b -= lr*bE
+    
+    print(f'epoch = {epoch}')
+    print(f' y :  {y:.3f}')
+    print(f' w1 :  {w1:.3f}')
+    print(f' w2 :  {w2:.3f}')
+    print(f' b :  {b:.3f}')
+    
+    if E < 0.0000001 :
+        break
+        
+* 결과값
+epoch = 64
+ y :  26.999
+ w1 :  4.143
+ w2 :  5.714
+ b :  1.571
+epoch = 65
+ y :  27.000
+ w1 :  4.143
+ w2 :  5.714
+ b :  1.571
+ 
+
+**** 2입력 2출력 인공 *****
+@제 1공식 : y1 = x1*w1 + x2*w2 + 1*b1
+            y2 = x1*w3 + x2*w4 + 1*b2
+ex_1)
+x1, x2 = 2,3
+w1, w2 = 3,4
+w3, w4 = 5,6
+b1, b2 = 1,2
+y1 = x1*w1 + x2*w2 + 1*b1
+y2 = x1*w3 + x2*w4 + 1*b2
+(y1,y2)
+결과값 : (19, 30)
+
+@제 2공식 : E = (y1-y1T)**2/2 + (y2-y2T)**2/2
+ex_2)
+y1T,y2T=27,-30
+E = (y1-y1T)**2/2 + (y2-y2T)**2/2
+E
+결과값 : 1832.0
+
+@제 3공식 : y1E = y1 - y1T
+            y2E = y2 - y2T
+ex_3)
+y1E = y1 - y1T
+y2E = y2 - y2T
+(y1E,y2E)
+결과값 : (-8, 60)
+
+@제 4공식 : x1E = yE*w1
+            x2E = yE*w2
+
+@제 5공식 : y = x1*w1 + x2*w2 + 1*b
+            y = w1*x1 + w2*x2 + b*1
+
+@제 6공식 : w1E =yE*x1
+            w2E =yE*x2
+            bE=yE*1
+ex_4)
+w1E =yE*x1
+w2E =yE*x2
+bE=yE*1
+(w1E, w2E, bE)
+결과값 : (-16, -24, -8)
 
 
+@제 7공식 : w1 -= lr*w1E
+            w2 -= lr*w2E
+            b -= lr*bE
+ex_5)
+lr = 0.01
+w1 -= lr*w1E
+w2 -= lr*w2E
+b -= lr*bE
+(w1,w2,b)
+결과값 : (3.16, 4.24, 1.08)
 
 
 
