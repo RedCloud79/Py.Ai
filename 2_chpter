@@ -13,20 +13,20 @@ ex_1) dnn_test (기본적인 틀 코드)
 import tensorflow as tf
 import numpy as np
 
-X = np.array([[2]])
-YT = np.array([[10]])
-W=np.array([[3]])
-B=np.array([1])
+X = np.array([[2]]) # 입력 데이터
+YT = np.array([[10]]) # 목표데이터(라벨)
+W=np.array([[3]]) # 가중치
+B=np.array([1]) # 편향
 
 model = tf.keras.Sequential([
-    tf.keras.Input(shape=(1,)),
-    tf.keras.layers.Dense(1)
+    tf.keras.Input(shape=(1,)), # 입력 층 노드의 개수를 1로 설정한다.
+    tf.keras.layers.Dense(1) # 출력 층 노드의 개수를 1로 설정한다.
 ])
 
 model.layers[0].set_weights([W,B])
 
-model.compile(optimizer = 'sgd',
-              loss='mse')
+model.compile(optimizer = 'sgd', # 7공식, 학습
+              loss='mse') # 2공식, 오차 계산
 
 Y = model.predict(X)
 print(Y)
@@ -38,27 +38,28 @@ print('B=',model.layers[0].get_weights()[1])
 
 Y = model.predict(X)
 print(Y)
+
 * 결과값
 W= [[4.1999974]]
 B= [1.6000019]
 1/1 [==============================] - 0s 16ms/step
 [[9.999997]]
 
-
+------------------------------------------------------------------------------------------
 # 2입력 1출력의 예제
 ex_1)
 import tensorflow as tf
 import numpy as np
 
-X = np.array([[2,3]])
-YT = np.array([[27]])
-W=np.array([[3],[4]])
-B=np.array([1])
+X = np.array([[2,3]]) # 입력 데이터
+YT = np.array([[27]]) # 목표 데이터(라벨)
+W=np.array([[3],[4]]) # 가중치
+B=np.array([1]) # 편향
 
 model = tf.keras.Sequential([
     tf.keras.Input(shape=(2,)),
     tf.keras.layers.Dense(1)
-])
+]) # 신경망 모양 결정(W, B 내부적 준비)
 
 model.layers[0].set_weights([W,B])
 
@@ -82,20 +83,21 @@ B= [1.5714294]
 1/1 [==============================] - 0s 16ms/step
 [[26.999998]]
 
+------------------------------------------------------------------------------------------------
 # 2입력 2출력의 예제
 ex_1)
 import tensorflow as tf
 import numpy as np
 
-X = np.array([[2,3]])
-YT = np.array([[27, -30]])
-W=np.array([[3,5],[4,6]])
-B=np.array([1,2])
+X = np.array([[2,3]]) # 입력 데이터
+YT = np.array([[27, -30]]) # 목표 데이터(라벨)
+W=np.array([[3,5],[4,6]]) # 가중치
+B=np.array([1,2]) # 편향
 
 model = tf.keras.Sequential([
     tf.keras.Input(shape=(2,)),
     tf.keras.layers.Dense(2)
-])
+]) # 신경망 모양 결정
 
 model.layers[0].set_weights([W,B])
 
@@ -112,6 +114,7 @@ print('B=',model.layers[0].get_weights()[1])
 
 Y = model.predict(X)
 print(Y)
+
 * 결과값
 W= [[ 4.1428556 -3.5714262]
  [ 5.714284  -6.857143 ]]
@@ -119,24 +122,24 @@ B= [ 1.5714294 -2.2857132]
 1/1 [==============================] - 0s 16ms/step
 [[ 26.999994 -29.999994]]
 
-
+--------------------------------------------------------------------------------------------
 # 2입력 2은닉 2출력의 예제
 ex_1)
 import tensorflow as tf
 import numpy as np
 
-X = np.array([[.05,.10]])
-YT = np.array([[.01, .99]])
-W=np.array([[.15,.25],[.20,.30]])
-B=np.array([.35,.35])
-W2=np.array([[.40,.50],[.45,.55]])
-B2=np.array([.60,.60])
+X = np.array([[.05,.10]]) # 입력 데이터
+YT = np.array([[.01, .99]]) # 목표 데이터(라벨)
+W=np.array([[.15,.25],[.20,.30]]) # 가중치 <=
+B=np.array([.35,.35]) # 편향
+W2=np.array([[.40,.50],[.45,.55]]) # 가중치 <=
+B2=np.array([.60,.60]) # 편향
 
 model = tf.keras.Sequential([
     tf.keras.Input(shape=(2,)),
     tf.keras.layers.Dense(2),
     tf.keras.layers.Dense(2)
-])
+]) # 신경망 모양 결정
 
 model.layers[0].set_weights([W,B])
 model.layers[1].set_weights([W2,B2])
@@ -166,7 +169,7 @@ B2= [-0.09561112  0.73054373]
 1/1 [==============================] - 0s 16ms/step
 [[0.01000983 0.9899955 ]]
 
-
+----------------------------------------------------------------------------------------------
 ## 딥러닝 활용 맛보기
 - 손글씨 숫자 데이터를 입력받아 학습을 수행하는 예제
 - 28*28*1*60000개 : 훈련용, 28*28*1*10000개 : 검증용
@@ -177,9 +180,11 @@ B2= [-0.09561112  0.73054373]
 ex_1) 손글씨 숫자 인식 예제
 import tensorflow as tf
 
-mnist = tf.keras.datasets.mnist # fashion_mnist 의류와 관련된 데이터
+mnist = tf.keras.datasets.mnist # mnist에는 6만개의 학습용, 1만개의 시험용이 존재
+                                #fashion_mnist 의류와 관련된 데이터
 
-(X, YT), (x, yt) = mnist.load_data()
+(X, YT), (x, yt) = mnist.load_data() # mnist의 데이터를 불러온다.
+                                     # 60000개의 학습데이터, 10000개의 검증데이터
 # print(X.shape, YT.shape, x.shape, yt.shape,) = 모양을 찍어보는 코드
 
 # pip3 install matplotlib 다운로드 필요
@@ -207,15 +212,14 @@ for i in range(25):
 plt.show()
 ----------------------------------------------
 
-X, x = X/255, x/255
+X, x = X/255, x/255 # 60000x28x28, 10000x28x28
 X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
 # X, x = X.reshape((60000,28,28,1)), x.reshape((10000,28,28,1)) # CNN의 경우 수정
 # 28*28 => 784 :: (28,28) => (784,) DNN 2차 배열 => 1차 배열
 # 28*28*1 :: (28, 28) => (28,28,1) CNN 2 차배열 => 3차배열
 print(X.shape)
 
--------------------------------------------------
-* CNN의 경우 코드 3차원 배열
+------------------------------------------------- # CNN의 경우 코드 3차원 배열
 # input_shape = (28,28,1)
 model = tf.keras.Sequential([ # CNN의 경우 수정
     tf.keras.Input(shape=(28,28,1)),
@@ -238,13 +242,13 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(10, activation='softmax'),
-    ]) # 신경망 모양
+    ]) # 신경망 모양 *3개의 은닉이 들어간 코드
 
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
 
-model.fit(X,YT,epochs=5)
+model.fit(X,YT,epochs=5) # 학습 횟수
 
 model.evaluate(x,yt) # predict도 사용가능
 model.save('model.h5') # .h5 라는 확장자를 사용하여 저장
@@ -253,7 +257,7 @@ model.save('model.h5') # .h5 라는 확장자를 사용하여 저장
 1875/1875 [==============================] - 3s 2ms/step - loss: 0.0443 - accuracy: 0.9862
 313/313 [==============================] - 0s 901us/step - loss: 0.0796 - accuracy: 0.9751
 
-
+----------------------------------------------------------------------------------------------------
 # 학습한 모델파일을 활용 한 예시
 ex_1)
 import tensorflow as tf
@@ -290,8 +294,8 @@ for i in range(25):
     plt.xlabel(np.argmax(y[i]))
 plt.show()
 
-------------------------------------------------
-*틀린 것의 유무 확인 코드
+------------------------------------------------ # 틀린 것의 유무 확인 코드
+
 cnt_wrong=0
 y_wrong=[]
 for i in range(10000):
@@ -305,8 +309,8 @@ print(y_wrong[:10])
 plt.imshow(x[115])
 plt.show()
 print(np.argmax(y[115])), yt[115]
-------------------------------------------------
-* 인식못한 숫자를 5,5 싸이즈로 출력
+------------------------------------------------# 학습(인식)못한 숫자를 5,5 싸이즈로 출력
+
 plt.figure(figsize=(10,10))
 for i in range(25):
     plt.subplot(5,5,i+1)
@@ -325,7 +329,7 @@ plt.show()
 [115, 121, 199, 247, 259, 274, 321, 391, 445, 448]
 8 4
 
-
+-----------------------------------------------------------------------------------------------------------
 ## 활성화 함수
 - 복잡한 패턴을 학습하게 해준다. 출력 값을 어떤 범위로 제한할 수도 있다.
 - 신경 말단에서 다음 신경으로 전달될 신호를 결정하는 시냅스와 같은 역할을 한다.
