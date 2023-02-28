@@ -1,0 +1,179 @@
+## 텐서플로우로 딥러닝 구현하기
+
+# 1입력 1출력 ( 'numpy'라는 행렬을 활용 )
+* X(입력값), T(목표 값), W(가중치), B(편향)
+* tensorflow = Sequential( 순차적으로 처리를 해주는 신경망 )
+* optimizer = 아담(Adam)의 활용도(성능)가 높다.
+* W,B의 값을 건들경우는 거이 없다.
+
+# 1입력 1출력 인공신경
+ex_1) dnn_test (기본적인 틀 코드)
+import tensorflow as tf
+import numpy as np
+
+X = np.array([[2]])
+YT = np.array([[10]])
+W=np.array([[3]])
+B=np.array([1])
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(1,)),
+    tf.keras.layers.Dense(1)
+])
+
+model.layers[0].set_weights([W,B])
+
+model.compile(optimizer = 'sgd',
+              loss='mse')
+
+Y = model.predict(X)
+print(Y)
+
+model.fit(X,YT,epochs=1000)
+
+print('W=',model.layers[0].get_weights()[0])
+print('B=',model.layers[0].get_weights()[1])
+
+Y = model.predict(X)
+print(Y)
+* 결과값
+W= [[4.1999974]]
+B= [1.6000019]
+1/1 [==============================] - 0s 16ms/step
+[[9.999997]]
+
+
+# 2입력 1출력의 예제
+ex_1)
+import tensorflow as tf
+import numpy as np
+
+X = np.array([[2,3]])
+YT = np.array([[27]])
+W=np.array([[3],[4]])
+B=np.array([1])
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(2,)),
+    tf.keras.layers.Dense(1)
+])
+
+model.layers[0].set_weights([W,B])
+
+model.compile(optimizer = 'sgd',
+              loss='mse')
+
+Y = model.predict(X)
+print(Y)
+
+model.fit(X,YT,epochs=1000)
+
+print('W=',model.layers[0].get_weights()[0])
+print('B=',model.layers[0].get_weights()[1])
+
+Y = model.predict(X)
+print(Y)
+* 결과값
+W= [[4.1428566]
+ [5.714285 ]]
+B= [1.5714294]
+1/1 [==============================] - 0s 16ms/step
+[[26.999998]]
+
+# 2입력 2출력의 예제
+ex_1)
+import tensorflow as tf
+import numpy as np
+
+X = np.array([[2,3]])
+YT = np.array([[27, -30]])
+W=np.array([[3,5],[4,6]])
+B=np.array([1,2])
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(2,)),
+    tf.keras.layers.Dense(2)
+])
+
+model.layers[0].set_weights([W,B])
+
+model.compile(optimizer = 'sgd',
+              loss='mse')
+
+Y = model.predict(X)
+print(Y)
+
+model.fit(X,YT,epochs=1000)
+
+print('W=',model.layers[0].get_weights()[0])
+print('B=',model.layers[0].get_weights()[1])
+
+Y = model.predict(X)
+print(Y)
+* 결과값
+W= [[ 4.1428556 -3.5714262]
+ [ 5.714284  -6.857143 ]]
+B= [ 1.5714294 -2.2857132]
+1/1 [==============================] - 0s 16ms/step
+[[ 26.999994 -29.999994]]
+
+
+# 2입력 2은닉 2출력의 예제
+ex_1)
+import tensorflow as tf
+import numpy as np
+
+X = np.array([[.05,.10]])
+YT = np.array([[.01, .99]])
+W=np.array([[.15,.25],[.20,.30]])
+B=np.array([.35,.35])
+W2=np.array([[.40,.50],[.45,.55]])
+B2=np.array([.60,.60])
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(2,)),
+    tf.keras.layers.Dense(2),
+    tf.keras.layers.Dense(2)
+])
+
+model.layers[0].set_weights([W,B])
+model.layers[1].set_weights([W2,B2])
+
+model.compile(optimizer = 'sgd',
+              loss='mse')
+
+Y = model.predict(X)
+print(Y)
+
+model.fit(X,YT,epochs=1000)
+
+print('W=',model.layers[0].get_weights()[0])
+print('B=',model.layers[0].get_weights()[1])
+print('W2=',model.layers[1].get_weights()[0])
+print('B2=',model.layers[1].get_weights()[1])
+
+Y = model.predict(X)
+print(Y)
+* 결과값
+W= [[0.14315726 0.24180055]
+ [0.18631484 0.2836011 ]]
+B= [0.2131526  0.18600278]
+W2= [[0.20264395 0.53349453]
+ [0.2525947  0.5828034 ]]
+B2= [-0.09561112  0.73054373]
+1/1 [==============================] - 0s 16ms/step
+[[0.01000983 0.9899955 ]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
