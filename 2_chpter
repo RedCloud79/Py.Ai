@@ -172,8 +172,135 @@ B2= [-0.09561112  0.73054373]
 - 입력 = input layer 784, 은닉 = hidden layer 128(relu), 출력 = output layer 10(softmax)
 - Loss Layer (cross-entropy) 오차 함수
 
+# 활용의 예시
+ex_1) 손글씨 숫자 인식 예제
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist # fashion_mnist 의류와 관련된 데이터
+
+(X, YT), (x, yt) = mnist.load_data()
+# print(X.shape, YT.shape, x.shape, yt.shape,) = 모양을 찍어보는 코드
+
+# pip3 install matplotlib 다운로드 필요
+from matplotlib import pyplot as plt
+plt.imshow(X[0])
+plt.show()
+print(YT[0]) # YT의 값 출력
+print(tf.one_hot(YT[0], 10)) * 출력값 : tf.Tensor([0. 0. 0. 0. 0. 1. 0. 0. 0. 0.], shape=(10,), dtype=float32)
+
+--------------------------------------------- # 숫자로 데이터모양을 표기
+for row in range(28):
+    for col in range(28):
+        print('%4s' %X[0][row][col], end='')
+    print()
+    
+import numpy as np
+
+plt.figure(figsize=(10,10)) # 가로5 세로5의 데이터를 불러옴
+for i in range(25):
+    plt.subplot(5,5,i+1) # 세로, 가로 = 5
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(X[i],cmap=plt.cm.binary) #binary = 128기준으로 크면 검정 작으면 흰색
+    plt.xlabel(YT[i])
+plt.show()
+----------------------------------------------
+X, x = X/255, x/255
+X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
+print(X.shape)
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(784,)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax'),
+    ]) # 신경망 모양
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
+
+model.fit(X,YT,epochs=5)
+
+model.evaluate(x,yt) # predict도 사용가능
+model.save('model.h5') # .h5 라는 확장자를 사용하여 저장
+
+* 결과값
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.0443 - accuracy: 0.9862
+313/313 [==============================] - 0s 901us/step - loss: 0.0796 - accuracy: 0.9751
 
 
+# 학습한 모델파일을 활용 한 예시
+ex_1)
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist
+
+(_,_),(x,yt) = mnist.load_data()
+
+x=x/255
+x=x.reshape((10000,784))
+
+model = tf.keras.models.load_model('model.h5')
+
+y = model.predict(x) # 한개만 추출할경우 y = model.predict(x[0:1])
+
+print(y[0], yt[0])
+
+import numpy as np
+
+print(np.argmax(y[0]))
+
+import matplotlib.pyplot as plt
+
+x= x.reshape((10000,28,28))
+plt.imshow(x[0])
+plt.show()
+
+plt.figure(figsize=(10,10)) # 출력
+for i in range(25):
+    plt.subplot(5,5,i+1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(x[i],cmap=plt.cm.binary)
+    plt.xlabel(np.argmax(y[i]))
+plt.show()
+
+------------------------------------------------
+*틀린 것의 유무 확인 코드
+cnt_wrong=0
+y_wrong=[]
+for i in range(10000):
+    if np.argmax(y[i])!=yt[i]:
+        y_wrong.append(i)
+        cnt_wrong += 1
+print(cnt_wrong)
+print(y_wrong[:10])
+
+* 인식못한 숫자 출력
+plt.imshow(x[115])
+plt.show()
+print(np.argmax(y[115])), yt[115]
+------------------------------------------------
+* 인식못한 숫자를 5,5 싸이즈로 출력
+plt.figure(figsize=(10,10))
+for i in range(25):
+    plt.subplot(5,5,i+1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(x[y_wrong[i]],cmap=plt.cm.binary)
+    plt.xlabel(f'{y_wrong[i]} : y{np.argmax(y[y_wrong[i]])} yt{yt[y_wrong[i]]}')
+plt.show()
+------------------------------------------------
+*결과값
+313/313 [==============================] - 0s 801us/step
+[1.8032985e-07 1.7523572e-06 6.3887287e-06 2.1909325e-05 8.7815877e-08
+ 3.5283490e-06 1.4294808e-08 9.9996412e-01 3.9944635e-07 1.6487955e-06] 7
+7
+222
+[115, 121, 199, 247, 259, 274, 321, 391, 445, 448]
+8 4
 
 
 
