@@ -219,10 +219,10 @@ print(X.shape)
 # input_shape = (28,28,1)
 model = tf.keras.Sequential([ # CNN의 경우 수정
     tf.keras.Input(shape=(28,28,1)),
-    tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation='relu'),
+    tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation='relu'), # relu = 활성화함수
     tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation='relu'),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(10, activation='softmax'),
+    tf.keras.layers.Dense(10, activation='softmax'),    #  = 활성화함수
     ]) # 신경망 모양
     
     
@@ -232,7 +232,7 @@ Epoch 5/5
 313/313 [==============================] - 2s 7ms/step - loss: 0.0542 - accuracy: 0.9863 # 실질적 테스트값
 ----------------------------------------------------
 
-model = tf.keras.Sequential([ # CNN의 경우 수정
+model = tf.keras.Sequential([ 
     tf.keras.Input(shape=(784,)),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(64, activation='relu'),
@@ -324,6 +324,32 @@ plt.show()
 222
 [115, 121, 199, 247, 259, 274, 321, 391, 445, 448]
 8 4
+
+
+## 활성화 함수
+- 복잡한 패턴을 학습하게 해준다. 출력 값을 어떤 범위로 제한할 수도 있다.
+- 신경 말단에서 다음 신경으로 전달될 신호를 결정하는 시냅스와 같은 역할을 한다.
+- 활성화 함수의 유무에 따라 학습의 동작 유무와 학습률에 영향을 준다.
+
+# 활성화 함수의 종류
+* 시그모이드 = 0과 1로 분류하는 이진 부류 문제에 사용된다.
+
+** ReLU = y = {x(x>0)  (-3<= x <= 3), 주로 사용되는 함수이다. CNN에서 많이 사용된다.
+             {0(x<= 0)
+             노드가 많을 수록 신경망 전체적으로 학습이 되지 않는 단점이 있다.
+             가중치를 0에 가까운 값으로 주어 단점을 보완한다.
+
+* adam = 학습 함수
+
+** 소프트맥스(softmax) = (분류 회귀)모든 값을 합하면 1의 값을 만든다. 확률의 용도로 만들어 두었다.
+* 회귀 = 어떠한 목표값으로 만들려고 하는 성질
+
+# 순전파와 역전파
+* sigmoid = 순 : y' = a/(1+exp(-y)), 역 : yE = y'*(1-y')*y'E
+
+* ReLU = 순 : h'=(h>0)?h:0, 역 : hE=(h'>0)?h'E:0
+
+
 
 
 
