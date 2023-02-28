@@ -206,11 +206,33 @@ for i in range(25):
     plt.xlabel(YT[i])
 plt.show()
 ----------------------------------------------
+
 X, x = X/255, x/255
 X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
+# X, x = X.reshape((60000,28,28,1)), x.reshape((10000,28,28,1)) # CNN의 경우 수정
+# 28*28 => 784 :: (28,28) => (784,) DNN 2차 배열 => 1차 배열
+# 28*28*1 :: (28, 28) => (28,28,1) CNN 2 차배열 => 3차배열
 print(X.shape)
 
-model = tf.keras.Sequential([
+-------------------------------------------------
+* CNN의 경우 코드 3차원 배열
+# input_shape = (28,28,1)
+model = tf.keras.Sequential([ # CNN의 경우 수정
+    tf.keras.Input(shape=(28,28,1)),
+    tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation='relu'),
+    tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation='relu'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(10, activation='softmax'),
+    ]) # 신경망 모양
+    
+    
+* CNN의 경우 결과값
+Epoch 5/5
+1875/1875 [==============================] - 54s 29ms/step - loss: 0.0131 - accuracy: 0.9954 # 테스트
+313/313 [==============================] - 2s 7ms/step - loss: 0.0542 - accuracy: 0.9863 # 실질적 테스트값
+----------------------------------------------------
+
+model = tf.keras.Sequential([ # CNN의 경우 수정
     tf.keras.Input(shape=(784,)),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(64, activation='relu'),
