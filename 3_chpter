@@ -246,7 +246,36 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 [[-0. -0.  0.  0.]]
 
 
+ex_8) 딥러닝 활용 예제
+import tensorflow as tf
 
+mnist = tf.keras.datasets.fashion_mnist
+
+(X, YT), (x, yt) = mnist.load_data()
+
+X, x = X/255, x/255
+X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
+
+
+model = tf.keras.Sequential([ 
+    tf.keras.Input(shape=(784,)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax'),
+    ]) # 신경망 모양
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
+
+model.fit(X,YT,epochs=5)
+
+model.evaluate(x,yt) # predict도 사용가능
+
+
+* 결과값
+Epoch 5/5
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.2954 - accuracy: 0.8914
+313/313 [==============================] - 0s 901us/step - loss: 0.3458 - accuracy: 0.8772
 
 
 
