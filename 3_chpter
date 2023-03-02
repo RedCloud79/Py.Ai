@@ -113,6 +113,146 @@ print(YT.shape)
 (10, 4)
 
 
+ex_5) _461_2
+import tensorflow as tf
+from _7seg_data import X, YT
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(7,)),
+    tf.keras.layers.Dense(8, activation='relu'),
+    tf.keras.layers.Dense(4, activation='sigmoid')
+    ])
+
+model.compile(optimizer='adam', loss='mse') # mse는 평균 제곱 오차 함수
+
+model.fit(X,YT, epochs=10000)
+
+Y=model.predict(X)
+print(Y)
+
+*결과값
+1/1 [==============================] - 0s 62ms/step
+[[0. 0. 0. 0.]
+ [0. 0. 0. 1.]
+ [0. 0. 1. 0.]
+ [0. 0. 1. 1.]
+ [0. 1. 0. 0.]
+ [0. 1. 0. 1.]
+ [0. 1. 1. 0.]
+ [0. 1. 1. 1.]
+ [1. 0. 0. 0.]
+ [1. 0. 0. 1.]]
+
+
+# 국소해의 문제 해결해 보기
+- 최소값 지점을 찾지 못하고 극소값 지점에 수렴하는 경우이다.
+- 재학습을 수행해보거나 은닉층의 노드수를 변경을 해준다.
+
+
+ex_6) _461_6 (입력과 출력을 바꿔서 실행)
+import tensorflow as tf
+from _7seg_data import X, YT
+
+X, YT = YT, X
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(4,)),
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(7, activation='linear')
+    ])
+
+model.compile(optimizer='adam', loss='mse')
+
+model.fit(X,YT, epochs=10000)
+
+Y=model.predict(X)
+print(Y)
+* 결과값
+1/1 [==============================] - 0s 0s/step - loss: 1.4213e-10
+1/1 [==============================] - 0s 62ms/step
+[[ 1.  1.  1.  1.  1.  1.  0.]
+ [ 0.  1.  1.  0. -0.  0. -0.]
+ [ 1.  1.  0.  1.  1. -0.  1.]
+ [ 1.  1.  1.  1. -0.  0.  1.]
+ [ 0.  1.  1.  0. -0.  1.  1.]
+ [ 1. -0.  1.  1. -0.  1.  1.]
+ [ 0. -0.  1.  1.  1.  1.  1.]
+ [ 1.  1.  1. -0. -0.  0.  0.]
+ [ 1.  1.  1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  0. -0.  1.  1.]]
+ 
+ 
+ ex_7) 학습 내용 저장하기
+ import tensorflow as tf
+from _7seg_data import X, YT
+
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(7,)),
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(4, activation='linear')
+    ])
+
+model.compile(optimizer='adam', loss='mse')
+
+model.fit(X,YT, epochs=10000)
+
+Y=model.predict(X)
+print(Y)
+
+model.save('model_1.h5')
+
+
+ex_8) 모델 불러와 예측하기
+import tensorflow as tf
+from _7seg_data import X, YT
+
+model = tf.keras.models.load_model('model_1.h5')
+
+Y=model.predict(X)
+print(Y)
+
+*결과값
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+1/1 [==============================] - 0s 78ms/step
+[[-0. -0.  0.  0.]
+ [ 0. -0.  0.  1.]
+ [-0. -0.  1.  0.]
+ [-0. -0.  1.  1.]
+ [ 0.  1.  0.  0.]
+ [ 0.  1.  0.  1.]
+ [ 0.  1.  1.  0.]
+ [ 0.  1.  1.  1.]
+ [ 1. -0.  0.  0.]
+ [ 1. -0.  0.  1.]]
+
+ex_8_1) 모델 불러와 예측하기 2
+import tensorflow as tf
+from _7seg_data import X
+
+model = tf.keras.models.load_model('model_1.h5')
+
+x=X[:1]
+print(x.shape)
+
+Y=model.predict(x)
+print(Y)
+
+* 결과값
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+(1, 7)
+1/1 [==============================] - 0s 78ms/step
+[[-0. -0.  0.  0.]]
+
+
+
+
+
+
+
+
+
 
 
 
