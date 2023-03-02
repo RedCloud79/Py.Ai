@@ -76,7 +76,9 @@ B2= [-0.7672052  1.9672418]
 ex_3) _7seg_data
 import numpy as np
 
-np.set_printoptions(precision=1, suppress=True)
+np.set_printoptions(precision=1, suppress=True) # 함수를 호출하여 print함수로  numpy 배열을 출력할 때, 실수 출력
+형식을 조절한다. precision인자는 소수점 이하 자리수를 설정하며, supress인자는 실수 표기 방식을 설정하며, True로
+설정할 경우 0.0000514와 같은 소수점 표기법 False일 경우 5.14e-04와 같은 과학적 표기법을 사용한다.
 
 X=np.array([
     [ 1, 1, 1, 1, 1, 1, 0 ], # 0
