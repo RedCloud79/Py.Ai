@@ -217,7 +217,69 @@ Y = model.predict(X)
 print(Y)
 print(YT)
 *********************************************************************9
+import tensorflow as tf
+import numpy as np
+np.set_printoptions(precision=1, suppress=True)
 
+#np.random.seed(3)
+X = np.random.randint(0,2,(20,17))
+YT = np.random.randint(0,2,(20,14))
+
+print(X.shape, YT.shape)
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(17,)),
+    tf.keras.layers.Dense(32, activation = 'relu'),
+    tf.keras.layers.Dense(32, activation = 'relu'),
+    tf.keras.layers.Dense(14, activation = 'linear'),
+    ])
+
+model.compile(optimizer='adam',
+              loss = 'mse'
+              )
+model.fit(X,YT,epochs=2000)
+
+Y = model.predict(X)
+print(Y)
+print(YT)
+
+***********************************************************10
+import tensorflow as tf
+import numpy as np
+np.set_printoptions(precision=1, suppress=True)
+
+#np.random.seed(3)
+X = np.random.randint(0,256,(60000,32,32,3))
+YT = np.random.randint(0,10,(60000,))
+import matplotlib.pyplot as plt
+print(YT[0])
+plt.imshow(X[0])
+# plt.show()
+
+print(X.shape, YT.shape)
+X=X/255
+X=X.reshape(60000,3072)
+
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(3072,)),
+    tf.keras.layers.Dense(512, activation = 'relu'),
+    tf.keras.layers.Dense(10, activation = 'softmax'),
+    ])
+
+model.compile(optimizer='adam',
+              loss = 'sparse_categorical_crossentropy',
+              metrics=['accuracy']
+              )
+
+model.fit(X,YT,epochs=10)
+
+Y = model.predict(X)
+print(Y)
+print(YT)
+
+
+******************************************************************11
 
 
 
