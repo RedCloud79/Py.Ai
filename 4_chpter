@@ -280,13 +280,70 @@ print(YT)
 
 
 *****************************************************************************************************
-## CNN 알고리즘의 이해와 구현
+## CNN 알고리즘의 이해와 구현 (합성곱 신경 망)
 
 # CNN의 순전파 이해와 구현(Convolution Neural Network)
 - Conveolution과 pooling을 통해 그림의 특징을 추출해낸다.
-- 
 
 
+ex_1) cnn 형태의 코드
+import tensorflow as tf
+
+mnist = tf.keras.datasets.fashion_mnist
+
+(X,YT),(x,yt) = mnist.load_data()
+
+X,x = X/255,x/255
+X = X.reshape(60000,28,28,1)
+x = x.reshape(10000,28,28,1)
+
+model = tf.keras.Sequential ([
+    tf.keras.Input(shape=(28,28,1)),
+    tf.keras.layers.Conv2D(32,(3,3), activation = 'relu',padding='same'),
+    tf.keras.layers.Conv2D(64,(3,3), activation = 'relu',padding='same'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation = 'relu'),
+    tf.keras.layers.Dense(10, activation = 'softmax')
+    ])
+
+model.compile(optimizer = 'adam',
+              loss = 'sparse_categorical_crossentropy',
+              metrics = ['accuracy'])
+model.fit(X,YT,epochs = 5)
+
+model.evaluate(x,yt)
+
+* filter size .3x3 입력
+ex_1)
+import numpy as np
+
+X = np.random.randint(0,256,(3,3,1))
+
+import matplotlib.pyplot as plt
+plt.imshow(X)
+plt.show()
+print(X[0:3,0:3,0])
+
+F = np.random.randint(0,256,(3,3,1))
+plt.imshow(F)
+plt.show()
+print(F[:,:,0])
+
+plt.imshow(X*F)
+plt.show()
+print((X*F)[:,:,0])
+print(np.sum(X*F)) # 컨벌루션
+*결과값
+[[ 90  69 122]
+ [218 231 250]
+ [184 148 157]]
+[[  4 124 165]
+ [  1 125  89]
+ [196  61 172]]
+[[  360  8556 20130]
+ [  218 28875 22250]
+ [36064  9028 27004]]
+152485
 
 
 
