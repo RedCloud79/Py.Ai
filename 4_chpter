@@ -1,1 +1,124 @@
+**************************************1
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist
+
+(X, YT), (x, yt) = mnist.load_data()
+
+print(YT[0])
+print(YT[:10])
+print(tf.one_hot(YT[0],10))
+print(tf.one_hot(YT[1],10))
+print(tf.one_hot(YT[1],10).numpy())
+print(tf.one_hot(YT[:10],10).numpy())
+
+import numpy as np
+print(np.argmax(tf.one_hot(YT[:10],10)))
+
+# X, x = X/255, x/255
+# X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
+# 
+# 
+# model = tf.keras.Sequential([ 
+#     tf.keras.Input(shape=(784,)),
+#     tf.keras.layers.Dense(128, activation='relu'),
+#     tf.keras.layers.Dense(1, activation='softmax'),
+#     ]) # 신경망 모양
+# 
+# model.compile(optimizer='adam',
+#               loss='sparse_categorical_crossentropy'
+#               metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
+# 
+# model.fit(X,YT,epochs=50)
+# 
+# model.evaluate(x,yt) # predict도 사용가능
+# 
+# y=model.predict(x[:16])
+# print(y)
+
+
+********************************************2
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist
+
+(X, YT), (x, yt) = mnist.load_data()
+
+
+X, x = X/255, x/255
+X, x = X.reshape((60000,784)), x.reshape((10000,784)) # 데이터를 핌
+
+
+model = tf.keras.Sequential([ 
+    tf.keras.Input(shape=(784,)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax'),
+    ]) # 신경망 모양
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
+
+model.fit(X,YT,epochs=5)
+
+model.evaluate(x,yt) # predict도 사용가능
+
+model.save('hand_made.h5')
+
+***********************************************3
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist
+
+(_,_),(x,yt) = mnist.load_data()
+x/=255
+x.reshape((10000,784))
+
+model.tf.keras.models.load_model('hand_made.h5')
+
+y=model.predict(x[:1])
+print(y[0])
+
+****************************************************4
+import tensorflow as tf
+
+mnist = tf.keras.datasets.mnist
+
+(_,_),(x,yt) = mnist.load_data()
+x=x/255
+x = x.reshape((10000,784))
+
+model = tf.keras.models.load_model('hand_made.h5')
+import numpy as np
+np.set_printoptions(precision=2, suppress=True)
+
+y=model.predict(x[:1])
+print(y[0])
+print(yt[0])
+print(np.argmax(y[0]))
+
+********************************************************5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
