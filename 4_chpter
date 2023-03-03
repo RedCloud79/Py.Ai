@@ -98,12 +98,125 @@ print(yt[0])
 print(np.argmax(y[0]))
 
 ********************************************************5
+import tensorflow as tf
+import numpy as np
+mnist = tf.keras.datasets.cifar10
+
+(X, YT), (x, yt) = mnist.load_data()
+print(X.shape, YT.shape, x.shape, yt.shape)
+import matplotlib.pyplot as plt
+plt.imshow(X[0][0:32,0:32,2], cmap='Greens') #색깔 부분만 흑백형태로 표현
+# plt.show()
+
+for row in range(32):
+    for col in range(32):
+        print('%4d' %X[0][:,:,0][row][col], end='')
+    print()
+print(np.min(X), np.max(X))
+
+********************************************************6
+import tensorflow as tf
+import numpy as np
+mnist = tf.keras.datasets.cifar10
+
+(X, YT), (x, yt) = mnist.load_data()
+print(X.shape, YT.shape, x.shape, yt.shape)
+import matplotlib.pyplot as plt
+plt.imshow(X[0][0:32,0:32,2], cmap='Greens') #색깔 부분만 흑백형태로 표현
+# plt.show()
+
+# for row in range(32):
+#     for col in range(32):
+#         print('%4d' %X[0][:,:,0][row][col], end='')
+#     print()
+# print(np.min(X), np.max(X))
+X, x = X/255, x/255
+X, x = X.reshape((50000,3072)), x.reshape((10000,3072)) # 데이터를 핌
 
 
+model = tf.keras.Sequential([ 
+    tf.keras.Input(shape=(3072,)),
+    tf.keras.layers.Dense(1024, activation='relu'),
+    tf.keras.layers.Dropout(0.2),# 신경망을 끊어서 변수를 준다.
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(1, activation='linear'),
+    ]) # 신경망 모양
+
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
+
+model.fit(X,YT,epochs=5)
+
+model.evaluate(x,yt) # predict도 사용가능
+
+model.save('cifar10_1.h5')
+
+************************************************************7
+import tensorflow as tf
+import numpy as np
+mnist = tf.keras.datasets.cifar100
+
+(X, YT), (x, yt) = mnist.load_data()
+# print(X.shape, YT.shape, x.shape, yt.shape)
+# print(np.max(YT))
+import matplotlib.pyplot as plt
+plt.imshow(X[0]) #색깔 부분만 흑백형태로 표현
+# plt.show()
+
+# for row in range(32):
+#     for col in range(32):
+#         print('%4d' %X[0][:,:,0][row][col], end='')
+#     print()
+# print(np.min(X), np.max(X))
+X, x = X/255, x/255
+X, x = X.reshape((50000,3072)), x.reshape((10000,3072)) # 데이터를 핌
 
 
+model = tf.keras.Sequential([ 
+    tf.keras.Input(shape=(3072,)),
+    tf.keras.layers.Dense(1024, activation='relu'),
+    tf.keras.layers.Dense(100, activation='softmax'),
+    ]) # 신경망 모양
 
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']) # 오차 함수, metrics 얼마나 맞추는지
 
+model.fit(X,YT,epochs=5)
+
+model.evaluate(x,yt) # predict도 사용가능
+
+# model.save('cifar10_1.h5')
+
+*************************************************************************8
+#랜덤한 값을 주는 코드
+import tensorflow as tf
+import numpy as np
+np.set_printoptions(precision=2, suppress=True)
+
+np.random.seed(3) # 일정한 값을 추출할 수 있다.
+X = np.random.randint(0,2,(10,7))
+YT = np.random.randint(0,2,(10,4))
+
+print(X.shape, YT.shape)
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(7,)),
+    tf.keras.layers.Dense(16, activation = 'relu'),
+    tf.keras.layers.Dense(16, activation = 'relu'),
+    tf.keras.layers.Dense(4, activation = 'sigmoid'),
+    ])
+
+model.compile(optimizer='adam',
+              loss = 'mse'
+              )
+model.fit(X,YT,epochs=1000)
+Y = model.predict(X)
+print(Y)
+print(YT)
+*********************************************************************9
 
 
 
