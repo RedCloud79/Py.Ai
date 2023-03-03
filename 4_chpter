@@ -496,6 +496,57 @@ convolution =
  [28. 45. 23. 16.]
  [42. 48. 49. 28.]]
 
+# pooling .4x4 합성곱
+- 4개의 데이터를 모아서 1개로 만드는 작업
+- 4x4의 경우 2x2의 형태로 모아주는것
+- max pooling = 가장 큰값을 뽑아내는 것, everage pooling = 다합하여 평균값을 넣는다.
+
+ex_1)
+import numpy as np
+
+np.random.seed(1)
+
+image = np.random.randint(5, size=(4,4))
+print('image =\n', image)
+
+filter = np.random.randint(5, size=(3,3))
+print('filter =\n', filter)
+
+image_pad = np.pad(image,((1,1), (1,1)))
+print('image_pad =\n', image_pad)
+
+convolution = np.zeros((4,4))
+
+for row in range(4):
+    for col in range(4):
+        window = image_pad[row:row+3, col:col+3]
+        convolution[row, col] = np.sum(window*filter)
+        
+print('convolution =\n', convolution)
+
+max_pooled = np.zeros((2,2))
+
+for row in range(4):
+    for col in range(4):
+        window = convolution[2*row:2*row+2, 2*col:2*col+2]
+        max_pooled[row, col] = np.max(window)
+        
+print('max_pooled = \n', max_pooled)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
