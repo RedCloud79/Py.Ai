@@ -1,1 +1,183 @@
+import numpy as np
+
+np.random.seed(1)
+
+image = np.random.randint(5, size=(4,4))
+print('image =\n', image)
+
+filter = np.random.randint(5, size=(3,3))
+print('filter =\n', filter)
+
+image_pad = np.pad(image,((1,1), (1,1)))
+print('image_pad =\n', image_pad)
+
+convolution = np.zeros((4,4))
+
+for row in range(4):
+    for col in range(4):
+        window = image_pad[row:row+3, col:col+3]
+        convolution[row, col] = np.sum(window*filter)
+
+print('convolution =\n', convolution)
+
+max_pooled = np.zeros((2,2))
+
+for row in range(0, 2):
+    for col in range(0, 2):
+        window = convolution[2*row:2*row+2, 2*col:2*col+2]
+        max_pooled[row, col] = np.max(window)
+
+print('max_pooled =\n', max_pooled)
+
+# 출력값
+image =
+ [[3 4 0 1]
+ [3 0 0 1]
+ [4 4 1 2]
+ [4 2 4 3]]
+filter =
+ [[4 2 4]
+ [2 4 1]
+ [1 0 1]]
+image_pad =
+ [[0 0 0 0 0 0]
+ [0 3 4 0 1 0]
+ [0 3 0 0 1 0]
+ [0 4 4 1 2 0]
+ [0 4 2 4 3 0]
+ [0 0 0 0 0 0]]
+convolution =
+ [[16. 25. 10.  4.]
+ [38. 31. 27.  7.]
+ [28. 45. 23. 16.]
+ [42. 48. 49. 28.]]
+max_pooled =
+ [[38. 27.]
+ [48. 49.]]
+ ----------------------------------------------------------------------------------
+ import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+image_color = cv2.imread('cube.png')
+print('image_color.shape =', image_color.shape)
+image = cv2.cvtColor(image_color, cv2.COLOR_BGR2GRAY)
+print('image.shape =', image.shape)
+
+
+filter = np.array([
+    [1,1,1],
+    [1,1,1],
+    [1,1,1],
+])/9
+
+image_pad = np.pad(image,((1,1), (1,1)))
+print('image_pad.shape =', image_pad.shape)
+
+convolution = np.zeros_like(image)
+
+for row in range(image.shape[0]):
+    for col in range(image.shape[1]):
+        window = image_pad[row:row+3, col:col+3]
+        convolution[row, col] = np.clip(np.sum(window*filter), 0, 255)
+
+images = [image, convolution]
+labels = ['gray', 'convolution']
+
+plt.figure(figsize=(10, 5))
+for i in range(len(images)):
+    plt.subplot(1,2,i+1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(images[i], cmap=plt.cm.gray)
+    plt.xlabel(labels[i])
+plt.show()
+print('max_pooled =\n', max_pooled)
+
+#결과값
+image_color.shape = (500, 500, 3)
+image.shape = (500, 500)
+image_pad.shape = (502, 502)
+------------------------------------------------------------------------------------
+ filter = np.array([ // 선명한 이미지 추출하기
+    [-1,-1,-1],
+    [-1, 9,-1],
+    [-1,-1,-1],
+])/9
+ 
+  filter = np.array([ // 경계선 추출하기
+    [-1,-1,-1],
+    [-1, 8,-1],
+    [-1,-1,-1],
+])/9
+
+------------------------------------------------------------------------------------
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+image_color = cv2.imread('1images.png')
+print('image_color.shape =', image_color.shape)
+image = cv2.cvtColor(image_color, cv2.COLOR_BGR2GRAY)
+print('image.shape =', image.shape)
+
+
+filter = np.array([
+    [-1,-1,-1],
+    [-1,8,-1],
+    [-1,-1,-1],
+])
+
+image_pad = np.pad(image,((1,1), (1,1)))
+print('image_pad.shape =', image_pad.shape)
+
+convolution = np.zeros_like(image)
+
+for row in range(image.shape[0]):
+    for col in range(image.shape[1]):
+        window = image_pad[row:row+3, col:col+3]
+        convolution[row, col] = np.clip(np.sum(window*filter), 0, 255)
+
+max_pooled = np.zeros((int(image.shape[0]/2),int(image.shape[1]/2)))
+
+for row in range(0, int(image.shape[0]/2)):
+    for col in range(0, int(image.shape[1]/2)):
+        window = convolution[2*row:2*row+2, 2*col:2*col+2]
+        max_pooled[row, col] = np.max(window)
+
+images = [image, convolution, max_pooled]
+labels = ['gray', 'convolution', 'max_pooled']
+
+plt.figure(figsize=(15, 5))
+for i in range(len(images)):
+    plt.subplot(1,3,i+1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(images[i], cmap=plt.cm.gray)
+    plt.xlabel(labels[i])
+plt.show()
+#결과값
+image_color.shape = (156, 322, 3)
+image.shape = (156, 322)
+image_pad.shape = (158, 324)
+--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
